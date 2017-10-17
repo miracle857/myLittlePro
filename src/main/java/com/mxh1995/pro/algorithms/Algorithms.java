@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 import org.junit.Test;
@@ -34,11 +35,12 @@ public class Algorithms {
 	public class ListNode {
 		int val;
 		ListNode next;
-		
-		ListNode(){
+
+		ListNode() {
 			this.next = null;
 			this.val = 0;
 		}
+
 		ListNode(int val) {
 			this.val = val;
 			this.next = null;
@@ -144,7 +146,7 @@ public class Algorithms {
 	}
 
 	public int[] searchRange(int[] nums, int target) {
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < nums.length; i++) {
 			if (nums[i] == target) {
 				list.add(i);
@@ -171,7 +173,7 @@ public class Algorithms {
 	public int lengthOfLongestSubstring(String s) {
 		if (s.length() == 0)
 			return 0;
-		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> map = new HashMap<>();
 		int max = 0;
 		for (int i = 0, j = 0; i < s.length(); ++i) {
 			if (map.containsKey(s.charAt(i))) {
@@ -235,7 +237,8 @@ public class Algorithms {
 
 	public boolean isPalindrome(int x) {
 		String s = String.valueOf(x);
-		int begin = 0, end = s.length() - 1;
+		int begin = 0;
+		int end = s.length() - 1;
 		while (begin < end) {
 			if (s.charAt(begin) != s.charAt(end)) {
 				return false;
@@ -275,7 +278,8 @@ public class Algorithms {
 	}
 
 	public int maxSubArray1(int[] A) {
-		int maxSoFar = A[0], maxEndingHere = A[0];
+		int maxSoFar = A[0];
+		int maxEndingHere = A[0];
 		for (int i = 1; i < A.length; ++i) {
 			maxEndingHere = Math.max(maxEndingHere + A[i], A[i]);
 			maxSoFar = Math.max(maxSoFar, maxEndingHere);
@@ -469,12 +473,12 @@ public class Algorithms {
 	public List<List<Integer>> subsets(int[] nums) {
 		List<List<Integer>> list = new ArrayList<>();
 		Arrays.sort(nums);
-		backtrack(list, new ArrayList<>(), nums, 0);
+		backtrack(list, new ArrayList<Integer>(), nums, 0);
 		return list;
 	}
 
 	private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, int start) {
-		list.add(new ArrayList<>(tempList));
+		list.add(new ArrayList<Integer>(tempList));
 		for (int i = start; i < nums.length; i++) {
 			tempList.add(nums[i]);
 			backtrack(list, tempList, nums, i + 1);
@@ -483,7 +487,7 @@ public class Algorithms {
 	}
 
 	public void testForeach() {
-		List<Integer> list = new ArrayList<>();
+		List<Integer> list = new ArrayList<Integer>();
 		list.add(1);
 		list.add(2);
 		list.add(3);
@@ -539,9 +543,9 @@ public class Algorithms {
 	// }
 
 	public List<Double> averageOfLevels(TreeNode root) {
-		List<Double> list = new ArrayList<>();
+		List<Double> list = new ArrayList<Double>();
 		list.add(root.val / 1.0);
-		Queue<TreeNode> queue = new LinkedList<>();
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
 		queue.add(root);
 		while (queue.isEmpty()) {
 			for (int i = 0; i < queue.size(); i++) {
@@ -564,7 +568,7 @@ public class Algorithms {
 				return o1[0] != o2[0] ? -o1[0] + o2[0] : o1[1] - o2[1];
 			}
 		});
-		List<int[]> res = new LinkedList<>();
+		List<int[]> res = new LinkedList<int[]>();
 		for (int[] cur : people) {
 			res.add(cur[1], cur);
 		}
@@ -618,7 +622,7 @@ public class Algorithms {
 	 * 
 	 */
 	public List<Integer> findDuplicates(int[] nums) {
-		List<Integer> res = new ArrayList<>();
+		List<Integer> res = new ArrayList<Integer>();
 		for (int i = 0; i < nums.length; ++i) {
 			int index = Math.abs(nums[i]) - 1;
 			if (nums[index] < 0)
@@ -661,8 +665,8 @@ public class Algorithms {
 	 * @return
 	 */
 	public List<Integer> PrintFromTopToBottom(TreeNode root) {
-		Queue<TreeNode> queue = new LinkedList<>();
-		ArrayList<Integer> list = new ArrayList<>();
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		ArrayList<Integer> list = new ArrayList<Integer>();
 		queue.offer(root);
 		while (!queue.isEmpty()) {
 			int size = queue.size();
@@ -702,11 +706,11 @@ public class Algorithms {
 	}
 
 	public List<List<String>> groupAnagrams(String[] strs) {
-		List<List<String>> result = new ArrayList<>();
+		List<List<String>> result = new ArrayList<List<String>>();
 		if (strs.length == 0)
 			return result;
 
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<String>();
 		result.add(list);
 		list.add(strs[0]);
 		boolean flag = true;
@@ -720,7 +724,7 @@ public class Algorithms {
 			}
 			if (flag) {
 				flag = true;
-				List<String> l = new ArrayList<>();
+				List<String> l = new ArrayList<String>();
 				result.add(l);
 				l.add(strs[i]);
 			}
@@ -744,7 +748,7 @@ public class Algorithms {
 	}
 
 	public boolean compareStrings(String A, String B) {
-		List<Character> list = new ArrayList<>();
+		List<Character> list = new ArrayList<Character>();
 		for (int i = 0; i < A.length(); i++) {
 			list.add(A.charAt(i));
 		}
@@ -798,7 +802,7 @@ public class Algorithms {
 	}
 
 	public int longestPalindrome(String s) {
-		Map<Character, Integer> map = new HashMap<>();
+		Map<Character, Integer> map = new HashMap<Character, Integer>();
 		for (int i = 0; i < s.length(); i++) {
 			map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
 		}
@@ -837,48 +841,92 @@ public class Algorithms {
 	}
 
 	public int majorityElement(int[] nums) {
-		Map<Integer, Integer> map = new HashMap<>();
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		int result = 0;
 		for (int i : nums) {
 			Integer put = map.put(i, map.getOrDefault(i, 0) + 1);
-			if(put == null) put = 0;
+			if (put == null)
+				put = 0;
 			result = Math.max(result, put + 1);
 		}
 		for (Map.Entry<Integer, Integer> en : map.entrySet()) {
-			if(en.getValue() == result){
-				return  en.getKey();
+			if (en.getValue() == result) {
+				return en.getKey();
 			}
 		}
 		return 0;
 	}
 
-	
 	public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int result = getNum(l1)+getNum(l2);
-        String s = String.valueOf(result);
-        ListNode node = new ListNode((int)s.charAt(0));
-        ListNode re = node;
-        for(int i=1;i<s.length();i++){
-        	node.next = new ListNode((int)s.charAt(i));
-        	node = node.next;
-        }
-        return re;
-    }
-    private int getNum(ListNode node){
-        int num = 0;
-        while(node != null){
-            num *= 10;
-            num += node.val;
-            node = node.next;
-        }
-        return num;
-    }
+		int result = getNum(l1) + getNum(l2);
+		String s = String.valueOf(result);
+		ListNode node = new ListNode((int) s.charAt(0));
+		ListNode re = node;
+		for (int i = 1; i < s.length(); i++) {
+			node.next = new ListNode((int) s.charAt(i));
+			node = node.next;
+		}
+		return re;
+	}
+
+	private int getNum(ListNode node) {
+		int num = 0;
+		while (node != null) {
+			num *= 10;
+			num += node.val;
+			node = node.next;
+		}
+		return num;
+	}
+
+	public boolean containsNearbyDuplicate(int[] nums, int k) {
+		Set<Integer> list = new HashSet<Integer>();
+		for (int i = 0; i < nums.length; i++) {
+			if (i > k)
+				list.remove(nums[i - k - 1]);
+			if (!list.add(nums[i]))
+				return true;
+		}
+		return false;
+	}
+
+	public int missingNumber(int[] nums) {
+
+		int k = nums[0];
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i] == k + 1) {
+				k = nums[i];
+			} else {
+				return k + 1;
+			}
+		}
+		return nums[nums.length - 1];
+	}
+
+	public int calculate(String s) {
+		Stack<Character> stack = new Stack<>();
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == ' ') {
+				continue;
+			} else if (s.charAt(i) != ')') {
+				stack.push(s.charAt(i));
+			} else if (s.charAt(i) == ')') {
+				calculateSum(stack);
+			}
+		}
+		return 0;
+	}
+	private int calculateSum(Stack<Character> s){
+		
+		return 0;
+	}
+
 	@Test
 	public void test() {
-		int majorityElement = majorityElement(new int[]{3,3,4});
-		System.out.println(majorityElement);
-		//String s = reverseWords("Let's take LeetCode contest");
-		//System.out.println(s);
+		// int majorityElement = majorityElement(new int[] { 3, 3, 4 });
+		// System.out.println(majorityElement);
+		// String s = reverseWords("Let's take LeetCode contest");
+		// System.out.println(s);
 		// longestPalindrome("abccccdd");
 		// binarySearch(new int[] { 4, 5, 9, 9, 12, 13, 14, 15, 15, 18 }, 10);
 		// strStr("abcde", "e");
@@ -908,8 +956,17 @@ public class Algorithms {
 		// for (int i : A) {
 		// System.out.print(i + "-");
 		// }
-		int i = 0;
 
+		List<Integer> list1 = new ArrayList<>();
+		list1.add(1);
+		list1.add(2);
+		List<Integer> list2 = new ArrayList<>();
+		list2.add(3);
+		list2.add(4);
+		List<Integer> re = new ArrayList<>();
+		re.addAll(list2);
+		re.addAll(list1);
+		System.out.println(re.size());
 	}
 
 }
