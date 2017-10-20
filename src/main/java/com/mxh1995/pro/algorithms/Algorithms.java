@@ -2,6 +2,7 @@ package com.mxh1995.pro.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,9 +14,15 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import com.mxh1995.pro.algorithms.Algorithms.TreeNode;
+
 public class Algorithms {
+	
+	private static final Logger LOG = Logger.getLogger(Algorithms.class);
+	
 	static {
 		i = 0;
 	}
@@ -29,6 +36,9 @@ public class Algorithms {
 
 		TreeNode(int x) {
 			val = x;
+		}
+		public String toString(){
+			return val+"";
 		}
 	}
 
@@ -903,26 +913,103 @@ public class Algorithms {
 		return nums[nums.length - 1];
 	}
 
-	public int calculate(String s) {
-		Stack<Character> stack = new Stack<>();
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) == ' ') {
-				continue;
-			} else if (s.charAt(i) != ')') {
-				stack.push(s.charAt(i));
-			} else if (s.charAt(i) == ')') {
-				calculateSum(stack);
-			}
-		}
-		return 0;
-	}
-	private int calculateSum(Stack<Character> s){
+	/**
+	 * ] For example:
+	*	Given binary tree [3,9,20,null,null,15,7],
+	*	
+	*	    3
+	*	   / \
+	*	  9  20
+	*	    /  \
+	*	   15   7
+	*	
+	*	return its bottom-up level order traversal as:
+	*	
+	*	[
+	*	  [15,7],
+	*	  [9,20],
+	*	  [3]
+	*	]
+*
+	 * @param root
+	 * @return
+	 */
+	public List<List<Integer>> levelOrderBottom(TreeNode root) {
 		
-		return 0;
+		List<List<Integer>> result = new ArrayList<>();
+		if(root == null) return result;
+		List<Integer> list1 = new ArrayList<>();
+		list1.add(root.val);
+        result.add(list1);
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			List<Integer> list = new ArrayList<>();
+			for (int i = 0; i < size; i++) {
+				TreeNode pop = queue.poll();
+				if(pop.left != null) {
+					list.add(pop.left.val);
+					queue.offer(pop.left);
+				}
+				if(pop.right != null) {
+					list.add(pop.right.val);
+					queue.offer(pop.right);
+				}
+			}
+            if(list.size() != 0) result.add(list); 
+		}
+		Collections.reverse(result);
+		return result;
 	}
 
+	/**
+	 * 将数组  转化为 二叉树
+	 * Given binary tree [3,9,20,null,null,15,7].
+	 *      3 
+	 *	   / \ 
+	 *	  9  20
+	 *	    /  \
+	 *	   15   7
+	 */
+	public TreeNode arraysToBinaryTree(Integer[] array){
+		TreeNode root = new TreeNode(array[0]);
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		boolean left = true;
+		for (int i=1;i<array.length;i++) {
+			TreeNode poll = null;
+			if(!left){
+				poll = queue.poll();
+			}else{
+				poll = queue.peek();
+			}
+			if(array[i] != null){
+				if(left){
+					poll.left = new TreeNode(array[i]);
+					queue.offer(poll.left);
+				}else{
+					poll.right = new TreeNode(array[i]);
+					queue.offer(poll.right);
+				}
+			} 
+			left = !left;
+		}
+		return root;
+	} 
+	
+	public void printBinaryTree(TreeNode root){
+		if(root == null) return;
+		LOG.info(root.val);
+		
+	}
+	
 	@Test
 	public void test() {
+		Integer[] array = new Integer[]{1,2,3,4,null,null,5};
+		TreeNode node = arraysToBinaryTree(array);
+		levelOrderBottom(node);
+		//printBinaryTree(root);
 		// int majorityElement = majorityElement(new int[] { 3, 3, 4 });
 		// System.out.println(majorityElement);
 		// String s = reverseWords("Let's take LeetCode contest");
