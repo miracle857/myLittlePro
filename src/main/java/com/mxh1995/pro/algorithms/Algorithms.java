@@ -17,12 +17,10 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import com.mxh1995.pro.algorithms.Algorithms.TreeNode;
-
 public class Algorithms {
-	
+
 	private static final Logger LOG = Logger.getLogger(Algorithms.class);
-	
+
 	static {
 		i = 0;
 	}
@@ -37,8 +35,9 @@ public class Algorithms {
 		TreeNode(int x) {
 			val = x;
 		}
-		public String toString(){
-			return val+"";
+
+		public String toString() {
+			return val + "";
 		}
 	}
 
@@ -553,15 +552,30 @@ public class Algorithms {
 	// }
 
 	public List<Double> averageOfLevels(TreeNode root) {
-		List<Double> list = new ArrayList<Double>();
+		List<Double> list = new ArrayList<>();
 		list.add(root.val / 1.0);
-		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		Queue<TreeNode> queue = new LinkedList<>();
 		queue.add(root);
-		while (queue.isEmpty()) {
-			for (int i = 0; i < queue.size(); i++) {
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			// k:每一层 元素个数
+			int k = 0;
+			double sum = 0;
+			for (int i = 0; i < size; i++) {
 				TreeNode poll = queue.poll();
-				queue.add(poll.left);
-				queue.add(poll.right);
+				if (poll.left != null) {
+					k++;
+					queue.add(poll.left);
+					sum += poll.left.val;
+				}
+				if (poll.right != null) {
+					k++;
+					queue.add(poll.right);
+					sum += poll.right.val;
+				}
+			}
+			if (k != 0) {
+				list.add((sum / k));
 			}
 		}
 		return list;
@@ -901,8 +915,11 @@ public class Algorithms {
 	}
 
 	public int missingNumber(int[] nums) {
-
+		Arrays.sort(nums);
 		int k = nums[0];
+		if (k != 0) {
+			return 0;
+		}
 		for (int i = 1; i < nums.length; i++) {
 			if (nums[i] == k + 1) {
 				k = nums[i];
@@ -914,33 +931,29 @@ public class Algorithms {
 	}
 
 	/**
-	 * ] For example:
-	*	Given binary tree [3,9,20,null,null,15,7],
-	*	
-	*	    3
-	*	   / \
-	*	  9  20
-	*	    /  \
-	*	   15   7
-	*	
-	*	return its bottom-up level order traversal as:
-	*	
-	*	[
-	*	  [15,7],
-	*	  [9,20],
-	*	  [3]
-	*	]
-*
+	 * ] For example: Given binary tree [3,9,20,null,null,15,7],<br>
+	 * 
+	 * 3 <br>
+	 * / \ <br>
+	 * 9 20 <br>
+	 * / \ <br>
+	 * 15 7<br>
+	 * 
+	 * return its bottom-up level order traversal as:
+	 * 
+	 * [ [15,7], [9,20], [3] ]
+	 *
 	 * @param root
 	 * @return
 	 */
 	public List<List<Integer>> levelOrderBottom(TreeNode root) {
-		
+
 		List<List<Integer>> result = new ArrayList<>();
-		if(root == null) return result;
+		if (root == null)
+			return result;
 		List<Integer> list1 = new ArrayList<>();
 		list1.add(root.val);
-        result.add(list1);
+		result.add(list1);
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);
 		while (!queue.isEmpty()) {
@@ -948,68 +961,153 @@ public class Algorithms {
 			List<Integer> list = new ArrayList<>();
 			for (int i = 0; i < size; i++) {
 				TreeNode pop = queue.poll();
-				if(pop.left != null) {
+				if (pop.left != null) {
 					list.add(pop.left.val);
 					queue.offer(pop.left);
 				}
-				if(pop.right != null) {
+				if (pop.right != null) {
 					list.add(pop.right.val);
 					queue.offer(pop.right);
 				}
 			}
-            if(list.size() != 0) result.add(list); 
+			if (list.size() != 0)
+				result.add(list);
 		}
 		Collections.reverse(result);
 		return result;
 	}
 
 	/**
-	 * 将数组  转化为 二叉树
-	 * Given binary tree [3,9,20,null,null,15,7].
-	 *      3 
-	 *	   / \ 
-	 *	  9  20
-	 *	    /  \
-	 *	   15   7
+	 * 将数组 转化为 二叉树 Given binary tree [3,9,20,null,null,15,7]. 3 / \ 9 20 / \ 15
+	 * 7
 	 */
-	public TreeNode arraysToBinaryTree(Integer[] array){
+	public TreeNode arraysToBinaryTree(Integer[] array) {
 		TreeNode root = new TreeNode(array[0]);
 		Queue<TreeNode> queue = new LinkedList<>();
 		queue.offer(root);
 		boolean left = true;
-		for (int i=1;i<array.length;i++) {
+		for (int i = 1; i < array.length; i++) {
 			TreeNode poll = null;
-			if(!left){
+			if (!left) {
 				poll = queue.poll();
-			}else{
+			} else {
 				poll = queue.peek();
 			}
-			if(array[i] != null){
-				if(left){
+			if (array[i] != null) {
+				if (left) {
 					poll.left = new TreeNode(array[i]);
 					queue.offer(poll.left);
-				}else{
+				} else {
 					poll.right = new TreeNode(array[i]);
 					queue.offer(poll.right);
 				}
-			} 
+			}
 			left = !left;
 		}
 		return root;
-	} 
-	
-	public void printBinaryTree(TreeNode root){
-		if(root == null) return;
-		LOG.info(root.val);
-		
 	}
-	
+
+	public int findBottomLeftValue(TreeNode root) {
+		Queue<TreeNode> queue = new LinkedList<>();
+		queue.offer(root);
+		int result = 0;
+		while (!queue.isEmpty()) {
+			int size = queue.size();
+			for (int i = 0; i < size; i++) {
+				TreeNode poll = queue.poll();
+				if (poll.left != null)
+					queue.offer(poll.left);
+				if (poll.right != null)
+					queue.offer(poll.right);
+			}
+			if (queue.isEmpty()) {
+				return result;
+			}
+			result = queue.peek().val;
+		}
+		return result;
+	}
+
+	public int searchInsert(int[] nums, int target) {
+		int lo = 0;
+		int hi = nums.length - 1;
+		while (lo <= hi) {
+			int mid = (lo + hi) / 2;
+			if (target == nums[mid])
+				return mid;
+			if (target > nums[mid]) {
+
+				lo = mid - 1;
+			} else {
+
+				hi = mid + 1;
+			}
+		}
+		return lo;
+	}
+
+	public String addStrings(String num1, String num2) {
+		int len1 = num1.length();
+		int len2 = num2.length();
+		int maxLength = len1 > len2 ? len1 : len2;
+
+		// 进位标志
+		boolean flag = false;
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < maxLength; i++) {
+			int int1 = 0, int2 = 0;
+			try {
+				int1 = (int) (num1.charAt(len1 - i - 1) - '0');
+			} catch (Exception e) {
+				int1 = 0;
+			}
+			try {
+				int2 = (int) (num2.charAt(len2 - i - 1) - '0');
+			} catch (Exception e) {
+				int2 = 0;
+			}
+
+			// 有进位
+			if (flag) {
+				if (int1 + int2 + 1 >= 10) {
+					flag = true;
+					sb.append((int1 + int2 + 1) % 10);
+				} else {
+					flag = false;
+					sb.append((int1 + int2 + 1));
+				}
+			}
+			// 无进位
+			else {
+				if (int1 + int2 >= 10) {
+					flag = true;
+					sb.append((int1 + int2) % 10);
+				} else {
+					flag = false;
+					sb.append((int1 + int2));
+				}
+			}
+		}
+
+		if (flag) {
+			sb.append(1);
+		}
+		return sb.reverse().toString();
+	}
+
 	@Test
 	public void test() {
-		Integer[] array = new Integer[]{1,2,3,4,null,null,5};
-		TreeNode node = arraysToBinaryTree(array);
-		levelOrderBottom(node);
-		//printBinaryTree(root);
+		System.out.println(addStrings("1324", "85888"));
+
+		// char x = '8';
+		// System.out.println((int) (x - '0'));
+
+		// Integer[] array = new Integer[] { 1, 2, 3 };
+		// TreeNode node = arraysToBinaryTree(array);
+		// findBottomLeftValue(node);
+		// levelOrderBottom(node);
+		// printBinaryTree(root);
 		// int majorityElement = majorityElement(new int[] { 3, 3, 4 });
 		// System.out.println(majorityElement);
 		// String s = reverseWords("Let's take LeetCode contest");
