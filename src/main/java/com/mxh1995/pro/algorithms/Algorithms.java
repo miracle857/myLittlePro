@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -1096,9 +1098,60 @@ public class Algorithms {
 		return sb.reverse().toString();
 	}
 
+	public void checkAndExecute(List<TreeNode> list, Predicate<TreeNode> pre, Consumer<TreeNode> exec) {
+		// for (TreeNode treeNode : list) {
+		// if (pre.test(treeNode)) {
+		// exec.accept(treeNode);
+		// }
+		// }
+		list.forEach(x -> {
+			if (pre.test(x))
+				exec.accept(x);
+		});
+
+	}
+
 	@Test
 	public void test() {
-		System.out.println(addStrings("1324", "85888"));
+
+		// TreeNode value = null;
+		// Optional<TreeNode> opt = Optional.ofNullable(value);
+		// opt.ifPresent(System.out::println);
+		// System.out.println(opt.orElse(new TreeNode(66)));
+
+		TreeNode val2 = new TreeNode(4);
+		val2.left = new TreeNode(1);
+
+		TreeNode val3 = new TreeNode(4);
+		val3.left = new TreeNode(3);
+
+		TreeNode val4 = new TreeNode(4);
+		val4.left = new TreeNode(1);
+
+		List<TreeNode> list = new ArrayList<>();
+		list.add(val2);
+		list.add(val3);
+		list.add(val4);
+		checkAndExecute(list, x -> x.left.val == 1, x -> x.left.val = 2);
+
+		System.out.println("");
+
+		/*
+		 * filter 过滤 对原始 Stream 进行某项测试，通过测试的元素被留下来生成一个新 Stream。
+		 */
+		list.stream().filter(x -> x.left.val == 2).forEach(x -> System.out.print(x.left.val));
+
+		/*
+		 * Map 映射 中间操作map会将元素根据指定的Function接口来依次将元素转成另外的对象，
+		 */
+		list.stream().map(x -> x.left.val == 2).forEach(System.out::print);
+
+		// double x = 1.0 / 0.0;
+		// double z = 0.0d / 0.0;
+		// System.out.println(z);
+		// System.out.println(x > 999999);
+		//
+		// System.out.println(addStrings("1324", "85888"));
 
 		// char x = '8';
 		// System.out.println((int) (x - '0'));
@@ -1142,16 +1195,7 @@ public class Algorithms {
 		// System.out.print(i + "-");
 		// }
 
-		List<Integer> list1 = new ArrayList<>();
-		list1.add(1);
-		list1.add(2);
-		List<Integer> list2 = new ArrayList<>();
-		list2.add(3);
-		list2.add(4);
-		List<Integer> re = new ArrayList<>();
-		re.addAll(list2);
-		re.addAll(list1);
-		System.out.println(re.size());
+
 	}
 
 }

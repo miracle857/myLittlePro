@@ -3,7 +3,8 @@ package com.mxh1995.pro.test;
 public class 类的实例化顺序 extends Base{
 	
 	public static void main(String[] args) {
-		new Base();
+		new Child();
+		System.out.println();
 		new Child();
 	}
 
