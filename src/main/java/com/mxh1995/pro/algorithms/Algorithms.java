@@ -58,6 +58,13 @@ public class Algorithms {
 		}
 	}
 
+	/**
+	 * 删除一个链表，倒数第N个节点
+	 * 
+	 * @param head
+	 * @param n
+	 * @return
+	 */
 	ListNode removeNthFromEnd(ListNode head, int n) {
 		int result = 0;
 		ListNode h = head;
@@ -246,6 +253,12 @@ public class Algorithms {
 		return max;
 	}
 
+	/**
+	 * 判断数字 是否回文
+	 * 
+	 * @param x
+	 * @return
+	 */
 	public boolean isPalindrome(int x) {
 		String s = String.valueOf(x);
 		int begin = 0;
@@ -1113,6 +1126,9 @@ public class Algorithms {
 
 	@Test
 	public void test() {
+
+		int[] A = new int[] { 3, 7, 2, 5, 4, 9, 1, 6 };
+		quickSort(A, 0, A.length - 1);
 
 		// TreeNode value = null;
 		// Optional<TreeNode> opt = Optional.ofNullable(value);
